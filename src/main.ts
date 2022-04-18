@@ -1,18 +1,132 @@
 import './style.css'
+import { IKeys } from './types'
 
-const app = document.querySelector<HTMLDivElement>('#app')!
-
-app.innerHTML = `
-  <h1>Hello Vite!</h1>
-  <a href="https://vitejs.dev/guide/features.html" target="_blank">Documentation</a>
-`
-
-// Canvas
-const canvas = document.querySelector<HTMLCanvasElement>('canvas')!
-const cxt = canvas?.getContext('2d')
+import { canvas, ctx } from './helper'
+import Sprite from './Sprite'
 
 // Aspect ratio 16:9
-canvas.width = window.innerWidth
-canvas.height = window.innerWidth * (9 / 16)
+canvas.width = innerWidth
+canvas.height = innerWidth * (9 / 16)
 
-cxt?.fillRect(0, 0, canvas.width, canvas.height)
+// Define canvas context and canvas size
+ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+const player = new Sprite({
+  position: { x: 0, y: 0 },
+  velocity: { x: 0, y: 0 },
+  lastKeyPressed: '',
+})
+
+const enemy = new Sprite({
+  position: { x: canvas.width - 50, y: 0 },
+  velocity: { x: 0, y: 0 },
+  color: '#ff0000',
+  lastKeyPressed: '',
+})
+
+const keys: IKeys = {
+  ArrowLeft: {
+    pressed: false,
+  },
+  ArrowRight: {
+    pressed: false,
+  },
+  ArrowUp: {
+    pressed: false,
+  },
+  KeyA: {
+    pressed: false,
+  },
+  KeyD: {
+    pressed: false,
+  },
+  KeyW: {
+    pressed: false,
+  },
+}
+
+function animate() {
+  window.requestAnimationFrame(animate)
+  ctx.fillStyle = '#000'
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+  // Draw
+  player.update()
+  enemy.update()
+
+  // Player Movement
+  player.velocity.x = 0
+  enemy.velocity.x = 0
+
+  // Controls
+  if (keys.ArrowLeft.pressed && enemy.lastKeyPressed === 'ArrowLeft') {
+    enemy.velocity.x = -1
+  } else if (keys.ArrowRight.pressed && enemy.lastKeyPressed === 'ArrowRight') {
+    enemy.velocity.x = 1
+  }
+
+  if (keys.KeyA.pressed && player.lastKeyPressed === 'KeyA') {
+    player.velocity.x = -1
+  } else if (keys.KeyD.pressed && player.lastKeyPressed === 'KeyD') {
+    player.velocity.x = 1
+  }
+}
+
+animate()
+
+// Controls
+
+window.addEventListener('keydown', event => {
+  console.log(event.code)
+
+  switch (event.code) {
+    case 'KeyD':
+      keys.KeyD.pressed = true
+      player.lastKeyPressed = 'KeyD'
+      break
+    case 'KeyA':
+      keys.KeyA.pressed = true
+      player.lastKeyPressed = 'KeyA'
+      break
+    case 'KeyW':
+      player.velocity.y = -20
+      player.lastKeyPressed = 'KeyW'
+      break
+
+    case 'ArrowRight':
+      keys.ArrowRight.pressed = true
+      enemy.lastKeyPressed = 'ArrowRight'
+      break
+    case 'ArrowLeft':
+      keys.ArrowLeft.pressed = true
+      enemy.lastKeyPressed = 'ArrowLeft'
+      break
+    case 'ArrowUp':
+      enemy.velocity.y = -20
+      enemy.lastKeyPressed = 'ArrowUp'
+      break
+  }
+})
+
+window.addEventListener('keyup', event => {
+  switch (event.code) {
+    case 'ArrowRight':
+      keys.ArrowRight.pressed = false
+      break
+    case 'ArrowLeft':
+      keys.ArrowLeft.pressed = false
+      break
+    case 'ArrowUp':
+      keys.ArrowUp.pressed = false
+      break
+    case 'KeyD':
+      keys.KeyD.pressed = false
+      break
+    case 'KeyA':
+      keys.KeyA.pressed = false
+      break
+    case 'KeyW':
+      keys.KeyW.pressed = false
+      break
+  }
+})
