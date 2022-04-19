@@ -1,5 +1,4 @@
-import { IPosition, ISprite, IVelocity } from './types'
-import { canvas, ctx, gravity } from './helper'
+import { canvas, ctx, gravity, keys } from './helper'
 
 function SpriteMovement(sprite: ISprite) {
   sprite.height = sprite.height || 150
@@ -27,6 +26,14 @@ export default class Sprite implements ISprite {
     this.height = props.height || this.height
     this.color = props.color || this.color
     this.lastKeyPressed = props.lastKeyPressed
+  }
+
+  jump() {
+    if (this.position.y + this.height + this.velocity.y <= canvas.height) {
+      return
+    }
+
+    this.velocity.y = -20
   }
 
   draw() {

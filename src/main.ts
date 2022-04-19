@@ -1,7 +1,6 @@
 import './style.css'
-import { IKeys } from './types'
 
-import { canvas, ctx } from './helper'
+import { canvas, ctx, keys } from './helper'
 import Sprite from './Sprite'
 
 // Aspect ratio 16:9
@@ -23,27 +22,6 @@ const enemy = new Sprite({
   color: '#ff0000',
   lastKeyPressed: '',
 })
-
-const keys: IKeys = {
-  ArrowLeft: {
-    pressed: false,
-  },
-  ArrowRight: {
-    pressed: false,
-  },
-  ArrowUp: {
-    pressed: false,
-  },
-  KeyA: {
-    pressed: false,
-  },
-  KeyD: {
-    pressed: false,
-  },
-  KeyW: {
-    pressed: false,
-  },
-}
 
 function animate() {
   window.requestAnimationFrame(animate)
@@ -90,13 +68,7 @@ window.addEventListener('keydown', event => {
       player.lastKeyPressed = 'KeyA'
       break
     case 'KeyW':
-      if (
-        player.position.y + player.height + player.velocity.y <=
-        canvas.height
-      ) {
-        break
-      }
-      player.velocity.y = -20
+      player.jump()
       player.lastKeyPressed = 'KeyW'
       break
 
@@ -109,7 +81,7 @@ window.addEventListener('keydown', event => {
       enemy.lastKeyPressed = 'ArrowLeft'
       break
     case 'ArrowUp':
-      enemy.velocity.y = -20
+      enemy.jump()
       enemy.lastKeyPressed = 'ArrowUp'
       break
   }

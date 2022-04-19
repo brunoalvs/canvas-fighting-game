@@ -23,5 +23,5 @@ body {
 
 canvas {
   width: 100%;
-  border: 1px dashed plum;
+  /* border: 1px dashed plum; */
 }

@@ -1,4 +1,4 @@
-export interface ISprite {
+interface ISprite {
   position: IPosition
   velocity: IVelocity
   height?: number
@@ -6,17 +6,17 @@ export interface ISprite {
   lastKeyPressed: string
 }
 
-export interface IPosition {
+interface IPosition {
   x: number
   y: number
 }
 
-export interface IVelocity {
+interface IVelocity {
   x: number
   y: number
 }
 
-export interface IKeys {
+interface IKeys {
   ArrowLeft: {
     pressed: boolean
   }
