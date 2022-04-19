@@ -6,7 +6,7 @@ import Sprite from './Sprite'
 
 // Aspect ratio 16:9
 canvas.width = innerWidth
-canvas.height = innerWidth * (9 / 16)
+canvas.height = innerHeight
 
 // Define canvas context and canvas size
 ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -58,17 +58,18 @@ function animate() {
   player.velocity.x = 0
   enemy.velocity.x = 0
 
-  // Controls
-  if (keys.ArrowLeft.pressed && enemy.lastKeyPressed === 'ArrowLeft') {
-    enemy.velocity.x = -1
-  } else if (keys.ArrowRight.pressed && enemy.lastKeyPressed === 'ArrowRight') {
-    enemy.velocity.x = 1
-  }
-
+  // Controls Player
   if (keys.KeyA.pressed && player.lastKeyPressed === 'KeyA') {
     player.velocity.x = -1
   } else if (keys.KeyD.pressed && player.lastKeyPressed === 'KeyD') {
     player.velocity.x = 1
+  }
+
+  // Controls Enemy
+  if (keys.ArrowLeft.pressed && enemy.lastKeyPressed === 'ArrowLeft') {
+    enemy.velocity.x = -1
+  } else if (keys.ArrowRight.pressed && enemy.lastKeyPressed === 'ArrowRight') {
+    enemy.velocity.x = 1
   }
 }
 
@@ -89,6 +90,12 @@ window.addEventListener('keydown', event => {
       player.lastKeyPressed = 'KeyA'
       break
     case 'KeyW':
+      if (
+        player.position.y + player.height + player.velocity.y <=
+        canvas.height
+      ) {
+        break
+      }
       player.velocity.y = -20
       player.lastKeyPressed = 'KeyW'
       break
