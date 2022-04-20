@@ -1,8 +1,7 @@
-import { canvas, ctx, gravity, keys } from './helper'
+import { canvas, ctx, gravity } from './helper'
 
 function SpriteMovement(sprite: ISprite) {
   sprite.height = sprite.height || 150
-
   sprite.position.x += sprite.velocity.x
   sprite.position.y += sprite.velocity.y
 
@@ -16,20 +15,40 @@ function SpriteMovement(sprite: ISprite) {
 export default class Sprite implements ISprite {
   position: IPosition = { x: 0, y: 0 }
   velocity: IVelocity = { x: 0, y: 0 }
+  width: number = 50
   height: number = 150
   color: string = '#d2b5ed'
   lastKeyPressed: string = ''
+  attackBox: {
+    position: IPosition
+    width: number
+    height: number
+  } = {
+    position: this.position,
+    width: 100,
+    height: 50,
+  }
 
   constructor({ ...props }: ISprite) {
     this.position = props.position
     this.velocity = props.velocity
+    this.width = this.width
     this.height = props.height || this.height
     this.color = props.color || this.color
-    this.lastKeyPressed = props.lastKeyPressed
+    this.lastKeyPressed = props.lastKeyPressed || this.lastKeyPressed
+    this.attackBox = {
+      position: props.position,
+      width: this.attackBox.width,
+      height: this.attackBox.height,
+    }
   }
 
+  // Actions
   jump() {
-    if (this.position.y + this.height + this.velocity.y <= canvas.height) {
+    if (
+      this.position.y + this.height + this.velocity.y <=
+      canvas.height - this.height * 0.2
+    ) {
       return
     }
 
@@ -38,7 +57,16 @@ export default class Sprite implements ISprite {
 
   draw() {
     ctx.fillStyle = this.color || 'red'
-    ctx.fillRect(this.position.x, this.position.y, 50, this.height)
+    ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
+
+    // Attack box
+    ctx.fillStyle = 'green'
+    ctx.fillRect(
+      this.attackBox.position.x,
+      this.attackBox.position.y,
+      this.attackBox.width,
+      this.attackBox.height
+    )
   }
 
   update() {

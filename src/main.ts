@@ -11,15 +11,27 @@ canvas.height = innerHeight
 ctx.fillRect(0, 0, canvas.width, canvas.height)
 
 const player = new Sprite({
-  position: { x: 0, y: 0 },
-  velocity: { x: 0, y: 0 },
+  position: {
+    x: 0,
+    y: 0,
+  },
+  velocity: {
+    x: 0,
+    y: 0,
+  },
   lastKeyPressed: '',
 })
 
 const enemy = new Sprite({
-  position: { x: canvas.width - 50, y: 0 },
-  velocity: { x: 0, y: 0 },
-  color: '#ff0000',
+  position: {
+    x: canvas.width - 50,
+    y: 100,
+  },
+  velocity: {
+    x: 0,
+    y: 0,
+  },
+  color: 'blue',
   lastKeyPressed: '',
 })
 
@@ -32,22 +44,30 @@ function animate() {
   player.update()
   enemy.update()
 
-  // Player Movement
+  // Movement
   player.velocity.x = 0
   enemy.velocity.x = 0
 
-  // Controls Player
+  // Player movement
   if (keys.KeyA.pressed && player.lastKeyPressed === 'KeyA') {
-    player.velocity.x = -1
+    player.velocity.x = -5
   } else if (keys.KeyD.pressed && player.lastKeyPressed === 'KeyD') {
-    player.velocity.x = 1
+    player.velocity.x = 5
   }
 
-  // Controls Enemy
+  // Enemy movement
   if (keys.ArrowLeft.pressed && enemy.lastKeyPressed === 'ArrowLeft') {
-    enemy.velocity.x = -1
+    enemy.velocity.x = -5
   } else if (keys.ArrowRight.pressed && enemy.lastKeyPressed === 'ArrowRight') {
-    enemy.velocity.x = 1
+    enemy.velocity.x = 5
+  }
+
+  // Detect collision
+  if (
+    player.attackBox.position.x + player.attackBox.width > enemy.position.x &&
+    player.attackBox.position.x <= enemy.position.x + enemy.width
+  ) {
+    console.log('gotcha')
   }
 }
 
@@ -69,7 +89,6 @@ window.addEventListener('keydown', event => {
       break
     case 'KeyW':
       player.jump()
-      player.lastKeyPressed = 'KeyW'
       break
 
     case 'ArrowRight':
@@ -82,7 +101,6 @@ window.addEventListener('keydown', event => {
       break
     case 'ArrowUp':
       enemy.jump()
-      enemy.lastKeyPressed = 'ArrowUp'
       break
   }
 })

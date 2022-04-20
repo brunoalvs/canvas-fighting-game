@@ -1,9 +1,15 @@
 interface ISprite {
   position: IPosition
   velocity: IVelocity
+  width?: number
   height?: number
   color?: string
   lastKeyPressed: string
+  attackBox?: {
+    position: IPosition
+    width: number
+    height: number
+  }
 }
 
 interface IPosition {
