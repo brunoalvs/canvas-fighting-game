@@ -70,7 +70,20 @@ function animate() {
     player.attackBox.position.y <= enemy.position.y + enemy.height &&
     player.isAttacking
   ) {
+    console.log('Collision detected')
     player.isAttacking = false
+  }
+
+  // Detect collision on Attack (Enemy to Player)
+  if (
+    enemy.attackBox.position.x + enemy.attackBox.width > player.position.x &&
+    enemy.attackBox.position.x <= player.position.x + player.width &&
+    enemy.attackBox.position.y + enemy.attackBox.height >= player.position.y &&
+    enemy.attackBox.position.y <= player.position.y + player.height &&
+    enemy.isAttacking
+  ) {
+    console.log('EnemyCollision detected')
+    enemy.isAttacking = false
   }
 }
 
@@ -79,8 +92,6 @@ animate()
 // Controls
 
 window.addEventListener('keydown', event => {
-  console.log(event.code)
-
   switch (event.code) {
     case 'KeyD':
       keys.KeyD.pressed = true
@@ -110,6 +121,9 @@ window.addEventListener('keydown', event => {
       break
     case 'KeyP':
       enemy.attack()
+      break
+    default:
+      console.log(event.code)
       break
   }
 })
