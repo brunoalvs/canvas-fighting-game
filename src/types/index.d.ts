@@ -7,9 +7,14 @@ interface ISprite {
   lastKeyPressed: string
   attackBox?: {
     position: IPosition
+    offset: {
+      x: number
+      y: number
+    }
     width: number
     height: number
   }
+  isAttacking?: boolean
 }
 
 interface IPosition {

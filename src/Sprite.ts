@@ -21,13 +21,21 @@ export default class Sprite implements ISprite {
   lastKeyPressed: string = ''
   attackBox: {
     position: IPosition
+    offset: {
+      x: number
+      y: number
+    }
     width: number
     height: number
   } = {
-    position: this.position,
+    position: {
+      x: this.position.x,
+      y: this.position.y,
+    },
     width: 100,
     height: 50,
   }
+  isAttacking = false
 
   constructor({ ...props }: ISprite) {
     this.position = props.position
@@ -38,9 +46,11 @@ export default class Sprite implements ISprite {
     this.lastKeyPressed = props.lastKeyPressed || this.lastKeyPressed
     this.attackBox = {
       position: props.position,
+      offset: props.attackBox?.offset || this.attackBox.offset,
       width: this.attackBox.width,
       height: this.attackBox.height,
     }
+    this.isAttacking = this.isAttacking
   }
 
   // Actions
@@ -60,18 +70,30 @@ export default class Sprite implements ISprite {
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
 
     // Attack box
-    ctx.fillStyle = 'green'
-    ctx.fillRect(
-      this.attackBox.position.x,
-      this.attackBox.position.y,
-      this.attackBox.width,
-      this.attackBox.height
-    )
+    if (this.isAttacking) {
+      ctx.fillStyle = 'green'
+      ctx.fillRect(
+        this.attackBox.position.x,
+        this.attackBox.position.y,
+        this.attackBox.width,
+        this.attackBox.height
+      )
+    }
   }
 
   update() {
     this.draw()
+    this.attackBox.position.x = this.position.x - this.attackBox.offset.x
+    this.attackBox.position.y = this.position.y
 
     SpriteMovement(this)
+  }
+
+  attack() {
+    this.isAttacking = true
+
+    setTimeout(() => {
+      this.isAttacking = false
+    }, 100)
   }
 }
