@@ -1,17 +1,5 @@
 import { canvas, ctx, gravity } from './helper'
 
-function SpriteMovement(sprite: ISprite) {
-  sprite.height = sprite.height || 150
-  sprite.position.x += sprite.velocity.x
-  sprite.position.y += sprite.velocity.y
-
-  if (sprite.position.y + sprite.height + sprite.velocity.y >= canvas.height) {
-    sprite.velocity.y = 0
-  } else {
-    sprite.velocity.y += gravity
-  }
-}
-
 export default class Sprite implements ISprite {
   position: IPosition = { x: 0, y: 0 }
   velocity: IVelocity = { x: 0, y: 0 }
@@ -92,7 +80,7 @@ export default class Sprite implements ISprite {
     this.attackBox.position.x = this.position.x
     this.attackBox.position.y = this.position.y
 
-    SpriteMovement(this)
+    this.move()
   }
 
   attack() {
@@ -101,5 +89,16 @@ export default class Sprite implements ISprite {
     setTimeout(() => {
       this.isAttacking = false
     }, 200)
+  }
+
+  move() {
+    this.position.x += this.velocity.x
+    this.position.y += this.velocity.y
+
+    if (this.position.y + this.height + this.velocity.y >= canvas.height) {
+      this.velocity.y = 0
+    } else {
+      this.velocity.y += gravity
+    }
   }
 }
