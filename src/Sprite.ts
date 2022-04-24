@@ -16,8 +16,8 @@ export default class Sprite implements ISprite {
       x: this.position.x,
       y: this.position.y,
     },
-    width: 100,
-    height: 50,
+    width: 50,
+    height: 25,
   }
   isAttacking = false
 
@@ -48,7 +48,7 @@ export default class Sprite implements ISprite {
       return
     }
 
-    this.velocity.y = -20
+    this.velocity.y = -12
   }
 
   draw() {
@@ -102,3 +102,4 @@ export default class Sprite implements ISprite {
     }
   }
 }
+

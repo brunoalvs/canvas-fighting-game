@@ -24,7 +24,7 @@ const player = new Sprite({
 
 const enemy = new Sprite({
   position: {
-    x: canvas.width - 50,
+    x: canvas.width - 25,
     y: 100,
   },
   velocity: {
@@ -150,3 +150,4 @@ window.addEventListener('keyup', event => {
       break
   }
 })
+
