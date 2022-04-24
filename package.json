@@ -1,5 +1,5 @@
 {
-  "name": "fighting-game",
+  "name": "canvas-fighting-game",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -17,5 +17,6 @@
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
-  }
+  },
+  "packageManager": "yarn@3.2.0"
 }

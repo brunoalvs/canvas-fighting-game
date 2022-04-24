@@ -1,11 +1,11 @@
 import './style.css'
 
-import { canvas, ctx, keys } from './helper'
+import { canvas, ctx, keys } from './settings'
 import Sprite from './Sprite'
 
 // Aspect ratio 16:9
-canvas.width = innerWidth
-canvas.height = innerHeight
+canvas.width = 512
+canvas.height = 512 * 0.5625
 
 // Define canvas context and canvas size
 ctx.fillRect(0, 0, canvas.width, canvas.height)

@@ -1,10 +1,10 @@
-import { canvas, ctx, gravity } from './helper'
+import { canvas, ctx, gravity } from './settings'
 
 export default class Sprite implements ISprite {
   position: IPosition = { x: 0, y: 0 }
   velocity: IVelocity = { x: 0, y: 0 }
-  width: number = 50
-  height: number = 150
+  width: number = 25
+  height: number = 75
   color: string = '#d2b5ed'
   lastKeyPressed: string = ''
   attackBox: {
