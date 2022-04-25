@@ -1,54 +1,35 @@
 import { canvas, ctx, gravity } from './settings'
 
 export default class Sprite implements ISprite {
-  position: IPosition = { x: 0, y: 0 }
-  velocity: IVelocity = { x: 0, y: 0 }
-  width: number = 25
-  height: number = 75
-  color: string = '#d2b5ed'
-  lastKeyPressed: string = ''
+  position: IPosition
+  velocity: IVelocity
+  width: number
+  height: number
+  color: string
+  lastKeyPressed: string
   attackBox: {
     position: IPosition
     width: number
     height: number
-  } = {
-    position: {
-      x: this.position.x,
-      y: this.position.y,
-    },
-    width: 50,
-    height: 25,
   }
-  isAttacking = false
+  isAttacking: boolean
 
   constructor({ ...props }: ISprite) {
-    this.position = props.position
-    this.velocity = props.velocity
-    this.width = this.width
-    this.height = props.height || this.height
-    this.color = props.color || this.color
-    this.lastKeyPressed = props.lastKeyPressed || this.lastKeyPressed
+    this.position = props.position || { x: 0, y: 0 }
+    this.velocity = props.velocity || { x: 0, y: 0 }
+    this.width = props.width || 25
+    this.height = props.height || 75
+    this.color = props.color || '#d2b5ed'
+    this.lastKeyPressed = props.lastKeyPressed || ''
     this.attackBox = {
       position: {
         x: this.position.x,
         y: this.position.y,
       },
-      width: this.attackBox.width,
-      height: this.attackBox.height,
+      width: 50,
+      height: 25,
     }
-    this.isAttacking = this.isAttacking
-  }
-
-  // Actions
-  jump() {
-    if (
-      this.position.y + this.height + this.velocity.y <=
-      canvas.height - this.height * 0.2
-    ) {
-      return
-    }
-
-    this.velocity.y = -12
+    this.isAttacking = this.isAttacking = false
   }
 
   draw() {
@@ -56,16 +37,8 @@ export default class Sprite implements ISprite {
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
 
     // HITBOX
-    // Attack box
     if (this.isAttacking) {
-      ctx.strokeStyle = 'red'
-      ctx.strokeRect(
-        this.attackBox.position.x,
-        this.attackBox.position.y,
-        this.attackBox.width,
-        this.attackBox.height
-      )
-      ctx.fillStyle = 'green'
+      ctx.fillStyle = '#ff0000'
       ctx.fillRect(
         this.attackBox.position.x,
         this.attackBox.position.y,
@@ -81,6 +54,18 @@ export default class Sprite implements ISprite {
     this.attackBox.position.y = this.position.y
 
     this.move()
+  }
+
+  // Actions
+  jump() {
+    if (
+      this.position.y + this.height + this.velocity.y <=
+      canvas.height - this.height * 0.2
+    ) {
+      return
+    }
+
+    this.velocity.y = -12
   }
 
   attack() {
